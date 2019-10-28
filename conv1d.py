@@ -1,9 +1,15 @@
 import numpy as np
 
-conv1d_kernel = np.array([1, 2])
-data = np.array([0, 3, 4, 5])
-result = []
-for i in range(3):
-    print(data[i:i + 2], "*", conv1d_kernel, "=", data[i:i + 2] * conv1d_kernel)
-    result.append(np.sum(data[i:i + 2] * conv1d_kernel))
-print("Conv1d output", result)
+import data_conv
+
+res = np.zeros((1000, 256))
+
+inp = np.pad(data_conv.input, [(4,), (0,)])
+
+k_size = 9
+k_num = 256
+f_l = 1000
+
+for k_i in range(k_num):
+    for f_i in range(f_l):
+        res[f_i][k_i] = np.sum(inp[f_i:f_i + k_size] * data_conv.weights[:, :, k_i]) + data_conv.bias[k_i]
